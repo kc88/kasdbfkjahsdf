@@ -20,6 +20,8 @@ public class KongregateAPI :MonoBehaviour
         gameObject.name = "KongregateAPI";
         instance = this;
 
+        Object.DontDestroyOnLoad(gameObject);
+
         earnAdCoinButton.GetComponent<Button>().interactable = true;
 
         Application.ExternalEval(
@@ -27,7 +29,6 @@ public class KongregateAPI :MonoBehaviour
             "    kongregateUnitySupport.initAPI('KongregateAPI', 'OnKongregateAPILoaded');" +
             "};"
         );
-        somethingOutput.text = "Start();";
     }
 
     public void Submit(string name, int value)
@@ -38,47 +39,47 @@ public class KongregateAPI :MonoBehaviour
     public void OnKongregateAPILoaded(string userInfoString)
     {
         OnKongregateUserInfo(userInfoString);
-        GameManager.instance.APICallBack("Kong Access!");
-        somethingOutput.text = "OnKongregateAPILoaded();";
+        GameManager.instance.APICallBack();
+
+        #region take2
         // adsAvailable
         Application.ExternalEval(
-            "kongregate.mtx.addEventListener('adsAvailable', function(){" +
-            "   kongregateUnitySupport.getUnityObject().SendMessage('KongregateAPI', 'adsAvailable', params);" +
+            "kongregate.mtx.addEventListener('adsAvailable', function(e:Event):void{" +
+            "   unityObject.SendMessage('KongregateAPI', 'adsAvailable');" +
             "});"
         );
 
         // adsUnavailable
         Application.ExternalEval(
-            "kongregate.mtx.addEventListener('adsUnavailable', function(){" +
-            "   kongregateUnitySupport.getUnityObject().SendMessage('KongregateAPI', 'adsUnavailable', params);" +
+            "kongregate.mtx.addEventListener('adsUnavailable', function(e:Event):void{" +
+            "   unityObject.SendMessage('KongregateAPI', 'adsUnavailable');" +
             "});"
         );
 
         // adOpened
         Application.ExternalEval(
-            "kongregate.mtx.addEventListener('adOpened', function(){" +
-            "   kongregateUnitySupport.getUnityObject().SendMessage('KongregateAPI', 'adOpened', params);" +
+            "kongregate.mtx.addEventListener('adOpened', function(e:Event):void{" +
+            "   unityObject.SendMessage('KongregateAPI', 'adOpened');" +
             "});"
         );
 
         // adCompleted
         Application.ExternalEval(
-            "kongregate.mtx.addEventListener('adCompleted', function(){" +
-            "   kongregateUnitySupport.getUnityObject().SendMessage('KongregateAPI', 'adCompleted', params);" +
+            "kongregate.mtx.addEventListener('adCompleted', function(e:Event):void{" +
+            "   unityObject.SendMessage('KongregateAPI', 'adCompleted');" +
             "});"
         );
         // adAbandoned
         Application.ExternalEval(
-            "kongregate.mtx.addEventListener('adAbandoned', function(){" +
-            "   kongregateUnitySupport.getUnityObject().SendMessage('KongregateAPI', 'adAbandoned', params);" +
+            "kongregate.mtx.addEventListener('adAbandoned', function(e:Event):void{" +
+            "   unityObject.SendMessage('KongregateAPI', 'adAbandoned');" +
             "});"
         );
         // initializeIncentivizedAds
         Application.ExternalEval(
-            "if(typeof(kongregateUnitySupport) != 'undefined'){ kongregate.mtx.initializeIncentivizedAds(); };"
+            "kongregate.mtx.initializeIncentivizedAds();"
         );
-        somethingOutput.text = "initializeIncentivizedAds();";
-        InvokeRepeating("UpdateCheckAdsAvalable", 5f, 5f);
+        #endregion
     }
 
     public void OnKongregateUserInfo(string userInfoString)
@@ -108,9 +109,8 @@ public class KongregateAPI :MonoBehaviour
 
     public void ShowAd()
     {
-        somethingOutput.text = "kongregate.mtx.showIncentivizedAd();";
         Application.ExternalEval(
-            "if(typeof(kongregateUnitySupport) != 'undefined'){ kongregate.mtx.showIncentivizedAd(); };"
+            "kongregate.mtx.showIncentivizedAd();"
         );
     }
 
