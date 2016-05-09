@@ -1,4 +1,4 @@
-	function Function1(arg):void
-	{ 
-		alert( arg ); 
-	}
+Function1(arg)
+{
+alert(arg);
+}
