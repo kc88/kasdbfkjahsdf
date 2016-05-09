@@ -1,4 +1,3 @@
-  <script type='text/javascript'>
 	function Function1(arg):void
 	{ 
 		alert( arg ); 
@@ -25,5 +24,3 @@
 	});
  
 	kongregate.mtx.initializeIncentivizedAds();
-
-  </script>
